@@ -1,65 +1,3 @@
-__author__ = 'bibassitoula'
-import csv
-import random
-import numpy
-from scipy.spatial import distance
-import math
-import matplotlib.pyplot as plt
-
-#### Calculate the Euclidean distance between the points
-def euclideanDistance(given_row,given_centorid):
-    eucDistance=[]
-    for everyCentroid in given_centorid:
-            eucDistance.append(distance.euclidean(given_row,everyCentroid))
-    return eucDistance.index(min(eucDistance))
-
-
-#### Calculate the New Centroid from the Collected clusters
-def CalculateNewCentroid(new_clusters):
-    new_cluster_Rows = new_clusters
-    new_centroid_row = []
-    for key,val in new_cluster_Rows.items():
-        index = 0
-        center = []
-        #print(val)
-        #print(len(val))
-        while index < 13:
-            averageValue = 0
-            for i in range(0,len(val)):
-                averageValue = averageValue + val[i][index]
-            center.append(averageValue/len(val))
-            index = index + 1
-        new_centroid_row.append(center)
-    return new_centroid_row
-
-#### Checking if the new centroid is equal to the old centroid
-def isTheCentroidEqual(new_centroid,old_centroid):
-    #print(old_centroid[0])
-    #print(newCentroid[0])
-    for i in range(0,len(new_centroid)):
-        if old_centroid[i] != new_centroid[i]:
-            return 1
-    return 0
-#### Calculate the SSE for each cluster
-def calculateSSE(cluster_values,centers):
-    calc_SSE_clust = 0
-    newSet = []
-    print("  With "+str(len(cluster_values))+" Number of Instances is "),
-    for everySet in cluster_values:
-        newSet.append(sum([math.pow((m_i - x_i),2) for m_i, x_i in zip(centers, everySet)]))
-    return sum(newSet)
-
-def findingInsatanceId(initialPoints,cluster):
-    temp = {}
-    for i in range(1,len(cluster)+1):
-        temp[i] = []
-    for key,val in cluster.items():
-        for everyInstance in val:
-            temp[key].append((initialPoints.index(everyInstance))+1)
-    return temp
-
-
-
 if __name__ == '__main__':
     #### GIVE THE LOCATION OF WHERE THE FILE IS LOCATED
     filePath = "/Users/bibassitoula/Desktop/Data Mining /Assignment/assignment 4/wineDataset.csv"
@@ -122,9 +60,12 @@ plt.ylabel('Sum of Squared Error')
 plt.title('total sum of squared errors vs. K')
 plt.plot(Number_of_Cluster, SSE_Collection,'bo',Number_of_Cluster, SSE_Collection,'K')
 plt.show()
-
-
-
-
-
-
+def findingInsatanceId(initialPoints,cluster):
+    temp = {}
+    print("Cluster Id with their Instances ID")
+    for i in range(1,len(cluster)+1):
+        temp[i] = []
+    for key,val in cluster.items():
+        for everyInstance in val:
+            temp[key].append(initialPoints.index(everyInstance))
+    return temp
