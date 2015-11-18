@@ -21,8 +21,6 @@ def CalculateNewCentroid(new_clusters):
     for key,val in new_cluster_Rows.items():
         index = 0
         center = []
-        #print(val)
-        #print(len(val))
         while index < 13:
             averageValue = 0
             for i in range(0,len(val)):
@@ -34,15 +32,12 @@ def CalculateNewCentroid(new_clusters):
 
 #### Checking if the new centroid is equal to the old centroid
 def isTheCentroidEqual(new_centroid,old_centroid):
-    #print(old_centroid[0])
-    #print(newCentroid[0])
     for i in range(0,len(new_centroid)):
         if old_centroid[i] != new_centroid[i]:
             return 1
     return 0
 #### Calculate the SSE for each cluster
 def calculateSSE(cluster_values,centers):
-    calc_SSE_clust = 0
     newSet = []
     print("  With "+str(len(cluster_values))+" Number of Instances is "),
     for everySet in cluster_values:
@@ -72,7 +67,6 @@ if __name__ == '__main__':
             k = k + 1
             points.append(map(float,line[1:len(line)]))
     print("################ "+str(k)+" Instances Loaded Completely #####################")
-    #numberOfCluster = input("Enter The Number Of Cluster")
     SSE_Collection = []
     for i in range(2,7):
         print("#################################")
@@ -100,17 +94,23 @@ if __name__ == '__main__':
         totalSSE = []
         Cluster_SSE = []
         for key,val in cluster.items():
-            #print(centroid[key-1])
             print("sum of square error for cluster: "),
             print(key),
             Cluster_SSE = calculateSSE(val,centroid[key-1])
             totalSSE.append(Cluster_SSE)
             print(Cluster_SSE)
             Cluster_SSE = []
-        print("Sum of Squared Error for "+str(numberOfCluster)+" is : "),
+        print("Sum of Squared Error for "+str(numberOfCluster)+" Cluster is : "),
         print(sum(totalSSE))
         SSE_Collection.append(sum(totalSSE))
         totalSSE = []
+        print("The Cluster Mean for each cluster is")
+        r= 0
+        for eveyitem in centroid:
+            print("Cluster "),
+            print(r+1),
+            print(eveyitem)
+            r=r+1
         print("Cluster Id =====> Instance Id")
         for key,val in cl_id_tr_in.items():
             print(key),
@@ -122,7 +122,6 @@ plt.ylabel('Sum of Squared Error')
 plt.title('total sum of squared errors vs. K')
 plt.plot(Number_of_Cluster, SSE_Collection,'bo',Number_of_Cluster, SSE_Collection,'K')
 plt.show()
-
 
 
 
